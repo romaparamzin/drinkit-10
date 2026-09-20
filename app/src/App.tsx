@@ -84,6 +84,7 @@ export default function App() {
   }, [units, stats.data, merged, tick])
 
   const detail = detailId !== null ? (evals.find((e) => e.unit.publicId === detailId) ?? null) : null
+  const dodoUnreachable = units.length > 0 && stats.failedCount === units.length && (stats.dominantKind === 'blocked' || stats.dominantKind === 'not-json' || stats.dominantKind === 'timeout' || stats.dominantKind === 'network')
 
   const addUnit = useCallback((u: Unit) => {
     setStored((s) => ({ added: [...s.added.filter((x) => x.publicId !== u.publicId), u], hidden: s.hidden.filter((id) => id !== u.publicId) }))
@@ -132,7 +133,7 @@ export default function App() {
         />
       ) : null}
       {tab === 1 ? <Stores evals={evals} filter={storesFilter} onClearFilter={() => setStoresFilter(null)} onSelect={(e) => setDetailId(e.unit.publicId)} onAdd={() => setAddOpen(true)} /> : null}
-      {tab === 2 ? <Boards units={units} mode={boardsMode} onMode={setBoardsMode} selectedId={boardId} onSelect={setBoardId} /> : null}
+      {tab === 2 ? <Boards units={units} dodoUnreachable={dodoUnreachable} mode={boardsMode} onMode={setBoardsMode} selectedId={boardId} onSelect={setBoardId} /> : null}
 
       <BottomNav items={TABS} activeIndex={tab} onChange={setTab} />
 

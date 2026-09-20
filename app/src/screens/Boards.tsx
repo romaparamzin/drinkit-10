@@ -9,6 +9,7 @@ export type BoardsMode = 'overview' | 'single'
 
 type Props = {
   units: Unit[]
+  dodoUnreachable: boolean
   mode: BoardsMode
   onMode: (m: BoardsMode) => void
   selectedId: number | null
@@ -18,7 +19,7 @@ type Props = {
 const FRAME_W = 820
 const FRAME_H = 1010
 
-export function Boards({ units, mode, onMode, selectedId, onSelect }: Props) {
+export function Boards({ units, dodoUnreachable, mode, onMode, selectedId, onSelect }: Props) {
   const selected = units.find((u) => u.publicId === selectedId) ?? units[0] ?? null
 
   return (
@@ -41,6 +42,13 @@ export function Boards({ units, mode, onMode, selectedId, onSelect }: Props) {
           ))}
         </div>
       </header>
+
+      {dodoUnreachable ? (
+        <div className="mb-3 rounded-2xl border border-[#FAC775] bg-warn-bg px-4 py-3 text-[13px] leading-5 text-warn">
+          <p className="font-medium">Сайт Dodo сейчас не отвечает</p>
+          <p className="mt-0.5">Табло живёт на сайте Dodo, а его защита не пускает адреса VPN. Если VPN включён, отключите его или исключите из него это приложение, затем откройте вкладку заново.</p>
+        </div>
+      ) : null}
 
       {mode === 'overview' ? (
         <div className="flex flex-col gap-3">
