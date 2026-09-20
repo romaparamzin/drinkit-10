@@ -94,7 +94,7 @@ export function Summary({ evals, updatedAt, loading, onRefresh, onShowStores, hi
         </Card>
 
         <p className="px-1 text-[12px] leading-4 text-dim">
-          Данные публичного API Дринкит, обновляются каждые 5 минут. История для «Разгона» и графиков по дням копится раз в сутки{historyFrom ? ` с ${fmtDayShort(historyFrom)}` : ''}.
+          Выручка по чекам с НДС из публичного API Дринкит, обновляется каждые 5 минут. История для «Разгона» и графиков по дням копится раз в сутки{historyFrom ? ` с ${fmtDayShort(historyFrom)}` : ''}.
         </p>
       </div>
     </div>
