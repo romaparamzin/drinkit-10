@@ -19,13 +19,11 @@ const FILTER_LABEL: Record<Exclude<StoresFilter, null>, string> = {
   yellow: 'присмотреться',
   green: 'в норме',
   gray: 'без данных',
-  ramp: 'разгон',
 }
 
 export function Stores({ evals, filter, onClearFilter, onSelect, onAdd }: Props) {
   const list = evals.filter((e) => {
     if (!filter) return true
-    if (filter === 'ramp') return e.ageWeeks !== null && e.ageWeeks <= 26
     return e.level === filter
   })
 

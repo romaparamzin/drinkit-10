@@ -1,23 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { LayoutDashboard, MonitorSmartphone, Store, TrendingUp } from 'lucide-react'
+import { LayoutDashboard, MonitorSmartphone, Store } from 'lucide-react'
 import { BottomNav, type NavItem } from '@/components/ui/bottom-nav'
 import { Summary, type StoresFilter } from '@/screens/Summary'
 import { Stores } from '@/screens/Stores'
 import { StoreDetail } from '@/screens/StoreDetail'
-import { Ramp } from '@/screens/Ramp'
 import { Boards, type BoardsMode } from '@/screens/Boards'
 import { AddUnit } from '@/screens/AddUnit'
 import { useStats } from '@/hooks/useStats'
 import { EMPTY_HISTORY, earliestDate, loadHistory, mergeLive, type History } from '@/data/history'
 import { evaluate, sortEvaluations } from '@/lib/metrics'
-import { unitNow } from '@/lib/time'
 import { fetchUnitInfo } from '@/api/publicApi'
 import { DEFAULT_UNITS, clearHash, idsFromHash, loadStored, saveStored, shareLink, unitFromInfo, type Stored, type Unit } from '@/lib/units'
 
 const TABS: NavItem[] = [
   { label: 'Сводка', icon: LayoutDashboard },
   { label: 'Точки', icon: Store },
-  { label: 'Разгон', icon: TrendingUp },
   { label: 'Табло', icon: MonitorSmartphone },
 ]
 
@@ -86,7 +83,6 @@ export default function App() {
     return sortEvaluations(units.map((u) => evaluate(u, stats.data[u.publicId], merged)))
   }, [units, stats.data, merged, tick])
 
-  const todayIso = evals.find((e) => e.stats)?.stats?.date ?? unitNow(3).iso
   const historyFrom = earliestDate(history)
   const detail = detailId !== null ? (evals.find((e) => e.unit.publicId === detailId) ?? null) : null
 
@@ -117,7 +113,7 @@ export default function App() {
     setDetailId(null)
     setBoardId(u.publicId)
     setBoardsMode('single')
-    setTab(3)
+    setTab(2)
   }
 
   return (
@@ -137,8 +133,7 @@ export default function App() {
         />
       ) : null}
       {tab === 1 ? <Stores evals={evals} filter={storesFilter} onClearFilter={() => setStoresFilter(null)} onSelect={(e) => setDetailId(e.unit.publicId)} onAdd={() => setAddOpen(true)} /> : null}
-      {tab === 2 ? <Ramp evals={evals} history={merged} todayIso={todayIso} historyFrom={historyFrom} onSelect={(e) => setDetailId(e.unit.publicId)} /> : null}
-      {tab === 3 ? <Boards units={units} mode={boardsMode} onMode={setBoardsMode} selectedId={boardId} onSelect={setBoardId} /> : null}
+      {tab === 2 ? <Boards units={units} mode={boardsMode} onMode={setBoardsMode} selectedId={boardId} onSelect={setBoardId} /> : null}
 
       <BottomNav items={TABS} activeIndex={tab} onChange={setTab} />
 

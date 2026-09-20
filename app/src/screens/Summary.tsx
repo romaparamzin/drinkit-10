@@ -8,7 +8,7 @@ import { unitNow } from '@/lib/time'
 import { DEPARTMENT_NAME } from '@/lib/units'
 import { cn } from '@/lib/utils'
 
-export type StoresFilter = Level | 'ramp' | null
+export type StoresFilter = Level | null
 
 type Props = {
   evals: Evaluation[]
@@ -42,7 +42,6 @@ export function Summary({ evals, updatedAt, loading, failedCount, onRefresh, onS
   const yellows = evals.filter((e) => e.level === 'yellow')
   const grays = evals.filter((e) => e.level === 'gray')
   const greens = evals.filter((e) => e.level === 'green')
-  const ramp = evals.filter((e) => e.ageWeeks !== null && e.ageWeeks <= 26).sort((a, b) => (a.ageWeeks ?? 0) - (b.ageWeeks ?? 0))
 
   const updatedLabel = updatedAt ? new Date(updatedAt).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) : '—'
 
@@ -91,17 +90,11 @@ export function Summary({ evals, updatedAt, loading, failedCount, onRefresh, onS
         <Card className="divide-y divide-line">
           <StatusRow level="red" title="Внимание" onClick={() => onShowStores('red')} value={reds.length ? reds.map((e) => shortName(e.unit.name)).join(', ') : 'никого'} />
           <StatusRow level="yellow" title="Присмотреться" onClick={() => onShowStores('yellow')} value={yellows.length ? yellows.map((e) => shortName(e.unit.name)).join(', ') : 'никого'} />
-          <StatusRow
-            tone="accent"
-            title="Разгон"
-            onClick={() => onShowStores('ramp')}
-            value={ramp.length ? ramp.map((e) => `${shortName(e.unit.name)} нед. ${e.ageWeeks}`).join(' · ') : 'нет молодых точек'}
-          />
           <StatusRow level="green" title="В норме" onClick={() => onShowStores('green')} value={`${greens.length} ${greens.length === 1 ? 'точка' : greens.length < 5 ? 'точки' : 'точек'}${grays.length ? ` · без данных ${grays.length}` : ''}`} />
         </Card>
 
         <p className="px-1 text-[12px] leading-4 text-dim">
-          Выручка по чекам с НДС из публичного API Дринкит, обновляется каждые 5 минут. История для «Разгона» и графиков по дням копится раз в сутки{historyFrom ? ` с ${fmtDayShort(historyFrom)}` : ''}.
+          Выручка по чекам с НДС из публичного API Дринкит, обновляется каждые 5 минут. История для графиков по дням копится раз в сутки{historyFrom ? ` с ${fmtDayShort(historyFrom)}` : ''}.
         </p>
       </div>
     </div>
