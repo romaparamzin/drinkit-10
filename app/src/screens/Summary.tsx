@@ -1,9 +1,10 @@
-import { RefreshCw } from 'lucide-react'
+import { ExternalLink, RefreshCw } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Chip, LevelDot, TrendBadge } from '@/components/ui/badge'
 import { StatCard } from '@/components/ui/stat-card'
 import { fmtDayShort, fmtOrders, fmtPct, fmtRub, weekdayAccusative } from '@/lib/format'
 import { pct, type Evaluation, type Level } from '@/lib/metrics'
+import { API_CHECK_URL, type ApiErrorKind } from '@/api/publicApi'
 import { unitNow } from '@/lib/time'
 import { DEPARTMENT_NAME } from '@/lib/units'
 import { cn } from '@/lib/utils'
@@ -15,13 +16,14 @@ type Props = {
   updatedAt: number | null
   loading: boolean
   failedCount: number
+  errorKind: ApiErrorKind | null
   onRefresh: () => void
   onShowStores: (filter: StoresFilter) => void
 }
 
 export const shortName = (name: string) => name.replace(/^Москва\s+/u, '')
 
-export function Summary({ evals, updatedAt, loading, failedCount, onRefresh, onShowStores }: Props) {
+export function Summary({ evals, updatedAt, loading, failedCount, errorKind, onRefresh, onShowStores }: Props) {
   const withStats = evals.filter((e) => e.stats)
   const todayIso = withStats[0]?.stats?.date ?? unitNow(3).iso
   const yDate = withStats[0]?.yesterday.date ?? unitNow(3).iso
@@ -63,10 +65,18 @@ export function Summary({ evals, updatedAt, loading, failedCount, onRefresh, onS
 
       <div className="flex flex-col gap-3">
         {failedCount > 0 ? (
-          <button type="button" onClick={onRefresh} className="flex items-center justify-between gap-3 rounded-2xl border border-[#FAC775] bg-warn-bg px-4 py-3 text-left text-[13px] text-warn">
-            <span>{loading ? 'Повторяю запрос…' : `Нет ответа от API по ${failedCount} ${failedCount === 1 ? 'точке' : 'точкам'}, повторю через несколько секунд.`}</span>
-            <span className="shrink-0 font-medium">Обновить</span>
-          </button>
+          <div className="rounded-2xl border border-[#FAC775] bg-warn-bg px-4 py-3 text-[13px] leading-5 text-warn">
+            <p className="font-medium">{loading ? 'Повторяю запрос…' : `Нет данных по ${failedCount} ${failedCount === 1 ? 'точке' : 'точкам'}`}</p>
+            <p className="mt-0.5">{errorHint(errorKind)}</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <button type="button" onClick={onRefresh} className="rounded-full bg-white px-3 py-1.5 text-[13px] font-medium text-warn border border-[#FAC775]">
+                Обновить сейчас
+              </button>
+              <a href={API_CHECK_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1.5 text-[13px] font-medium text-warn border border-[#FAC775]">
+                <ExternalLink size={14} /> Проверить API
+              </a>
+            </div>
+          </div>
         ) : null}
         <StatCard
           label={`Сейчас, ${updatedLabel}`}
@@ -98,6 +108,22 @@ export function Summary({ evals, updatedAt, loading, failedCount, onRefresh, onS
       </div>
     </div>
   )
+}
+
+function errorHint(kind: ApiErrorKind | null): string {
+  switch (kind) {
+    case 'blocked':
+    case 'not-json':
+      return 'Сайт Dodo отвечает отказом или страницей проверки вместо данных. Так бывает при включённом VPN: его адреса попадают под защиту сайта. Отключите VPN или исключите из него это приложение, затем нажмите «Обновить».'
+    case 'timeout':
+      return 'API не отвечает за 15 секунд. Обычно это медленная сеть или VPN. Повторяю автоматически.'
+    case 'network':
+      return 'Нет соединения с API: проверьте интернет и VPN. Повторяю автоматически.'
+    case 'http':
+      return 'API вернул ошибку. Повторяю автоматически.'
+    default:
+      return 'Повторяю автоматически.'
+  }
 }
 
 function StatusRow({ level, tone, title, value, onClick }: { level?: Level; tone?: 'accent'; title: string; value: string; onClick: () => void }) {

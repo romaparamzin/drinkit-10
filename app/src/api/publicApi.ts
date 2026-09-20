@@ -50,15 +50,40 @@ export type PublicUnitInfo = PublicUnitBrief & {
   IsTemporarilyClosed?: boolean
 }
 
-async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
-  const res = await fetch(`${PUBLIC_API}/${path}`, {
-    headers: { Accept: 'application/json' },
-    cache: 'no-store',
-    signal,
-  })
-  if (!res.ok) throw new Error(`${path}: HTTP ${res.status}`)
-  return (await res.json()) as T
+export type ApiErrorKind = 'network' | 'timeout' | 'blocked' | 'http' | 'not-json'
+
+export class ApiError extends Error {
+  kind: ApiErrorKind
+  status: number | null
+  constructor(kind: ApiErrorKind, message: string, status: number | null = null) {
+    super(message)
+    this.kind = kind
+    this.status = status
+  }
 }
+
+async function getJson<T>(path: string, signal?: AbortSignal): Promise<T> {
+  let res: Response
+  try {
+    res = await fetch(`${PUBLIC_API}/${path}`, { headers: { Accept: 'application/json' }, cache: 'no-store', signal })
+  } catch (e) {
+    const name = (e as Error)?.name
+    if (name === 'TimeoutError' || name === 'AbortError') throw new ApiError('timeout', `${path}: нет ответа за отведённое время`)
+    throw new ApiError('network', `${path}: ${(e as Error)?.message ?? 'сетевая ошибка'}`)
+  }
+  if (res.status === 403 || res.status === 429 || res.status === 503) {
+    throw new ApiError('blocked', `${path}: HTTP ${res.status}`, res.status)
+  }
+  if (!res.ok) throw new ApiError('http', `${path}: HTTP ${res.status}`, res.status)
+  const text = await res.text()
+  try {
+    return JSON.parse(text) as T
+  } catch {
+    throw new ApiError('not-json', `${path}: вместо данных пришла страница`, res.status)
+  }
+}
+
+export const API_CHECK_URL = `${PUBLIC_API}/FinancialMetrics`
 
 export async function fetchStats(publicId: number, signal?: AbortSignal): Promise<UnitStats> {
   const raw = await getJson<Omit<UnitStats, 'fetchedAt'>>(

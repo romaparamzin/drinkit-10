@@ -123,6 +123,7 @@ export default function App() {
           updatedAt={stats.updatedAt}
           loading={stats.loading}
           failedCount={stats.failedCount}
+          errorKind={stats.dominantKind}
           onRefresh={() => void stats.refresh()}
           onShowStores={(f) => {
             setStoresFilter(f)
