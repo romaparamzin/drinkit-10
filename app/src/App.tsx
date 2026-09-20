@@ -7,7 +7,7 @@ import { StoreDetail } from '@/screens/StoreDetail'
 import { Boards, type BoardsMode } from '@/screens/Boards'
 import { AddUnit } from '@/screens/AddUnit'
 import { useStats } from '@/hooks/useStats'
-import { EMPTY_HISTORY, earliestDate, loadHistory, mergeLive, type History } from '@/data/history'
+import { EMPTY_HISTORY, loadHistory, mergeLive, type History } from '@/data/history'
 import { evaluate, sortEvaluations } from '@/lib/metrics'
 import { fetchUnitInfo } from '@/api/publicApi'
 import { DEFAULT_UNITS, clearHash, idsFromHash, loadStored, saveStored, shareLink, unitFromInfo, type Stored, type Unit } from '@/lib/units'
@@ -83,7 +83,6 @@ export default function App() {
     return sortEvaluations(units.map((u) => evaluate(u, stats.data[u.publicId], merged)))
   }, [units, stats.data, merged, tick])
 
-  const historyFrom = earliestDate(history)
   const detail = detailId !== null ? (evals.find((e) => e.unit.publicId === detailId) ?? null) : null
 
   const addUnit = useCallback((u: Unit) => {
@@ -125,7 +124,6 @@ export default function App() {
           loading={stats.loading}
           failedCount={stats.failedCount}
           onRefresh={() => void stats.refresh()}
-          historyFrom={historyFrom}
           onShowStores={(f) => {
             setStoresFilter(f)
             setTab(1)

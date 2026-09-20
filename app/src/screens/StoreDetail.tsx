@@ -12,6 +12,9 @@ import type { Evaluation } from '@/lib/metrics'
 import type { Unit } from '@/lib/units'
 import { cn } from '@/lib/utils'
 
+/** История по дням и неделям скрыта 20.09.2026 до накопления данных сборщиком; вернуть, переключив флаг. */
+const SHOW_HISTORY = false
+
 type Props = {
   evaluation: Evaluation | null
   history: History
@@ -66,6 +69,8 @@ export function StoreDetail({ evaluation, history, onClose, onOpenBoard, onHide 
           <Card className="p-4 text-[14px] text-dim">Нет данных от публичного API.</Card>
         )}
 
+        {SHOW_HISTORY ? (
+          <>
         <Card className="p-4">
           <div className="mb-3 flex items-center justify-between">
             <p className="text-[13px] text-dim">Выручка по дням</p>
@@ -106,6 +111,8 @@ export function StoreDetail({ evaluation, history, onClose, onOpenBoard, onHide 
           )}
           <p className="mt-2 text-[12px] leading-4 text-dim">Процент считается только между неделями с одинаковым числом дней.</p>
         </Card>
+          </>
+        ) : null}
 
         <div className="mt-1 flex flex-col gap-2">
           <button type="button" onClick={() => onOpenBoard(u)} className="flex h-11 items-center justify-center gap-2 rounded-full bg-brand text-[15px] font-medium text-white active:opacity-90">

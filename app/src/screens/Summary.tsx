@@ -17,12 +17,11 @@ type Props = {
   failedCount: number
   onRefresh: () => void
   onShowStores: (filter: StoresFilter) => void
-  historyFrom: string | null
 }
 
 export const shortName = (name: string) => name.replace(/^Москва\s+/u, '')
 
-export function Summary({ evals, updatedAt, loading, failedCount, onRefresh, onShowStores, historyFrom }: Props) {
+export function Summary({ evals, updatedAt, loading, failedCount, onRefresh, onShowStores }: Props) {
   const withStats = evals.filter((e) => e.stats)
   const todayIso = withStats[0]?.stats?.date ?? unitNow(3).iso
   const yDate = withStats[0]?.yesterday.date ?? unitNow(3).iso
@@ -94,7 +93,7 @@ export function Summary({ evals, updatedAt, loading, failedCount, onRefresh, onS
         </Card>
 
         <p className="px-1 text-[12px] leading-4 text-dim">
-          Выручка по чекам с НДС из публичного API Дринкит, обновляется каждые 5 минут. История для графиков по дням копится раз в сутки{historyFrom ? ` с ${fmtDayShort(historyFrom)}` : ''}.
+          Выручка по чекам с НДС из публичного API Дринкит, обновляется каждые 5 минут.
         </p>
       </div>
     </div>
