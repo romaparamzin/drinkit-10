@@ -45,17 +45,18 @@ export function StoreDetail({ evaluation, history, onClose, onOpenBoard, onHide 
         </p>
 
         {e.stats ? (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-3">
             <StatCard
               label="Сейчас"
-              value={<span className="text-[22px]">{fmtRub(e.now.value)}</span>}
-              badge={e.now.ready ? <TrendBadge value={e.now.vsWeek} muted={e.now.vsWeekMuted} size="sm" /> : <Chip>ещё закрыто</Chip>}
-              caption={`к вчера к этому часу ${fmtPct(e.now.vsYesterday)}`}
+              value={fmtRub(e.now.value)}
+              badge={e.now.ready ? <TrendBadge value={e.now.vsWeek} muted={e.now.vsWeekMuted} /> : <Chip>ещё закрыто</Chip>}
+              caption={`к ${weekdayAccusative(todayIso)} неделю назад к этому часу · к вчера к этому часу ${fmtPct(e.now.vsYesterday)} · ${fmtOrders(e.now.orders)}`}
             />
             <StatCard
               label={`Вчера, ${fmtDayShort(e.yesterday.date)}`}
-              value={<span className="text-[22px]">{fmtRub(e.yesterday.value)}</span>}
-              caption={`${fmtOrders(e.yesterday.orders)} · чек ${fmtRub(e.yesterday.avgCheck)}`}
+              value={fmtRub(e.yesterday.value)}
+              right={<Chip>чек {fmtRub(e.yesterday.avgCheck)}</Chip>}
+              caption={fmtOrders(e.yesterday.orders)}
             />
           </div>
         ) : (
