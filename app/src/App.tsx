@@ -127,6 +127,7 @@ export default function App() {
           evals={evals}
           updatedAt={stats.updatedAt}
           loading={stats.loading}
+          failedCount={stats.failedCount}
           onRefresh={() => void stats.refresh()}
           historyFrom={historyFrom}
           onShowStores={(f) => {
@@ -142,7 +143,7 @@ export default function App() {
       <BottomNav items={TABS} activeIndex={tab} onChange={setTab} />
 
       <StoreDetail evaluation={detail} history={merged} onClose={() => setDetailId(null)} onOpenBoard={openBoard} onHide={hideUnit} />
-      <AddUnit open={addOpen} onClose={() => setAddOpen(false)} visibleIds={units.map((u) => u.publicId)} hidden={hiddenUnits} onAdd={addUnit} onUnhide={unhide} onShare={share} />
+      <AddUnit open={addOpen} onClose={() => setAddOpen(false)} units={units} hidden={hiddenUnits} onAdd={addUnit} onHide={hideUnit} onUnhide={unhide} onShare={share} />
     </div>
   )
 }

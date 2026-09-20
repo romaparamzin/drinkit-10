@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { EyeOff, MonitorSmartphone } from 'lucide-react'
 import { Sheet } from '@/components/ui/sheet'
 import { Card } from '@/components/ui/card'
 import { StatCard } from '@/components/ui/stat-card'
 import { Chip, TrendBadge } from '@/components/ui/badge'
 import { Bars } from '@/components/ui/bars'
-import { calendarWeeks, earliestDate, lastNDays, type History } from '@/data/history'
+import { calendarWeeks, earliestDate, historyStart, lastNDays, type History } from '@/data/history'
+import { addDays } from '@/lib/time'
 import { fmtDayNum, fmtDayShort, fmtOrders, fmtPct, fmtRub, weekdayAccusative } from '@/lib/format'
 import type { Evaluation } from '@/lib/metrics'
 import type { Unit } from '@/lib/units'
@@ -21,8 +22,10 @@ type Props = {
 
 export function StoreDetail({ evaluation, history, onClose, onOpenBoard, onHide }: Props) {
   const [range, setRange] = useState<14 | 28>(14)
+  const [confirmRemove, setConfirmRemove] = useState(false)
   const e = evaluation
   const open = e !== null
+  useEffect(() => setConfirmRemove(false), [e?.unit.publicId])
 
   let body: React.ReactNode = null
   if (e) {
@@ -77,7 +80,7 @@ export function StoreDetail({ evaluation, history, onClose, onOpenBoard, onHide 
           <Bars data={bars} />
           <p className="mt-2 text-[12px] leading-4 text-dim">
             {known < range ? `Есть данные за ${known} из ${range} дней. ` : ''}
-            {from ? `История копится с ${fmtDayNum(from)}.` : 'История ещё не накоплена.'} Вчера подсвечено синим, выходные светлее.
+            {from ? `Сборщик работает с ${fmtDayNum(historyStart(from))} и каждую ночь добавляет два дня: вчерашний и тот же день неделю назад, поэтому история заполняется постепенно и станет сплошной с ${fmtDayNum(from)} к ${fmtDayNum(addDays(historyStart(from), 7))}.` : 'История ещё не накоплена.'} Вчера подсвечено синим, выходные светлее.
           </p>
         </Card>
 
@@ -104,13 +107,25 @@ export function StoreDetail({ evaluation, history, onClose, onOpenBoard, onHide 
           <p className="mt-2 text-[12px] leading-4 text-dim">Процент считается только между неделями с одинаковым числом дней.</p>
         </Card>
 
-        <div className="mt-1 flex gap-2">
-          <button type="button" onClick={() => onOpenBoard(u)} className="flex h-11 flex-1 items-center justify-center gap-2 rounded-full bg-brand text-[15px] font-medium text-white active:opacity-90">
+        <div className="mt-1 flex flex-col gap-2">
+          <button type="button" onClick={() => onOpenBoard(u)} className="flex h-11 items-center justify-center gap-2 rounded-full bg-brand text-[15px] font-medium text-white active:opacity-90">
             <MonitorSmartphone size={18} /> Табло этой точки
           </button>
-          <button type="button" onClick={() => onHide(u)} aria-label="Скрыть точку" className="grid size-11 place-items-center rounded-full border border-line bg-white text-dim active:bg-slate-100">
-            <EyeOff size={18} />
-          </button>
+          {confirmRemove ? (
+            <div className="flex gap-2">
+              <button type="button" onClick={() => onHide(u)} className="flex h-11 flex-1 items-center justify-center gap-2 rounded-full bg-red text-[15px] font-medium text-white">
+                Да, убрать с экрана
+              </button>
+              <button type="button" onClick={() => setConfirmRemove(false)} className="h-11 rounded-full border border-line bg-white px-5 text-[15px] font-medium text-dim">
+                Нет
+              </button>
+            </div>
+          ) : (
+            <button type="button" onClick={() => setConfirmRemove(true)} className="flex h-11 items-center justify-center gap-2 rounded-full border border-line bg-white text-[15px] font-medium text-down active:bg-slate-100">
+              <EyeOff size={18} /> Убрать точку с экрана
+            </button>
+          )}
+          <p className="px-1 text-[12px] leading-4 text-dim">Убранную точку можно вернуть через «Добавить» на экране «Точки».</p>
         </div>
         {e.stats ? (
           <p className="px-1 text-[12px] leading-4 text-dim">

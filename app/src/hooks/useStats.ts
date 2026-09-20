@@ -3,22 +3,41 @@ import { fetchStats, type UnitStats } from '@/api/publicApi'
 import type { Unit } from '@/lib/units'
 
 const REFRESH_MS = 5 * 60_000
-const STALE_MS = 60_000
+const STALE_MS = 45_000
+const REQUEST_TIMEOUT_MS = 15_000
+const RETRY_DELAYS_MS = [3_000, 8_000, 20_000, 45_000]
 
 export function useStats(units: Unit[]) {
   const [data, setData] = useState<Record<number, UnitStats>>({})
   const [errors, setErrors] = useState<Record<number, string>>({})
   const [updatedAt, setUpdatedAt] = useState<number | null>(null)
   const [loading, setLoading] = useState(false)
+  const [attempt, setAttempt] = useState(0)
   const lastRun = useRef(0)
+  const inFlight = useRef(false)
+  const retryTimer = useRef<number | null>(null)
+  const retryCount = useRef(0)
   const ids = units.map((u) => u.publicId).join(',')
+
+  const clearRetry = () => {
+    if (retryTimer.current !== null) {
+      window.clearTimeout(retryTimer.current)
+      retryTimer.current = null
+    }
+  }
 
   const refresh = useCallback(async () => {
     const list = ids ? ids.split(',').map(Number) : []
-    if (list.length === 0) return
+    if (list.length === 0 || inFlight.current) return
+    inFlight.current = true
+    clearRetry()
     setLoading(true)
     lastRun.current = Date.now()
-    const results = await Promise.allSettled(list.map((id) => fetchStats(id)))
+    setAttempt((n) => n + 1)
+
+    const results = await Promise.allSettled(list.map((id) => fetchStats(id, AbortSignal.timeout(REQUEST_TIMEOUT_MS))))
+
+    const failed: Record<number, string> = {}
     setData((prev) => {
       const next = { ...prev }
       results.forEach((r, i) => {
@@ -26,31 +45,51 @@ export function useStats(units: Unit[]) {
       })
       return next
     })
-    setErrors(() => {
-      const next: Record<number, string> = {}
-      results.forEach((r, i) => {
-        if (r.status === 'rejected') next[list[i]] = String(r.reason?.message ?? r.reason)
-      })
-      return next
+    results.forEach((r, i) => {
+      if (r.status === 'rejected') failed[list[i]] = String((r.reason as Error)?.message ?? r.reason)
     })
+    setErrors(failed)
     setUpdatedAt(Date.now())
     setLoading(false)
+    inFlight.current = false
+
+    const failures = Object.keys(failed).length
+    if (failures > 0 && retryCount.current < RETRY_DELAYS_MS.length) {
+      const delay = RETRY_DELAYS_MS[retryCount.current]
+      retryCount.current += 1
+      retryTimer.current = window.setTimeout(() => void refresh(), delay)
+    } else if (failures === 0) {
+      retryCount.current = 0
+    }
   }, [ids])
 
   useEffect(() => {
+    retryCount.current = 0
     void refresh()
-    const timer = setInterval(() => void refresh(), REFRESH_MS)
-    const onVisible = () => {
-      if (document.visibilityState === 'visible' && Date.now() - lastRun.current > STALE_MS) void refresh()
+    const timer = window.setInterval(() => void refresh(), REFRESH_MS)
+    const onWake = () => {
+      if (document.visibilityState !== 'visible') return
+      retryCount.current = 0
+      if (Date.now() - lastRun.current > STALE_MS) void refresh()
     }
-    document.addEventListener('visibilitychange', onVisible)
-    window.addEventListener('focus', onVisible)
+    const onOnline = () => {
+      retryCount.current = 0
+      void refresh()
+    }
+    document.addEventListener('visibilitychange', onWake)
+    window.addEventListener('focus', onWake)
+    window.addEventListener('pageshow', onWake)
+    window.addEventListener('online', onOnline)
     return () => {
-      clearInterval(timer)
-      document.removeEventListener('visibilitychange', onVisible)
-      window.removeEventListener('focus', onVisible)
+      window.clearInterval(timer)
+      clearRetry()
+      document.removeEventListener('visibilitychange', onWake)
+      window.removeEventListener('focus', onWake)
+      window.removeEventListener('pageshow', onWake)
+      window.removeEventListener('online', onOnline)
     }
   }, [refresh])
 
-  return { data, errors, updatedAt, loading, refresh }
+  const failedCount = Object.keys(errors).length
+  return { data, errors, failedCount, updatedAt, loading, attempt, refresh }
 }

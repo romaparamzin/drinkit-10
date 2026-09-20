@@ -9,19 +9,21 @@ import { DEPARTMENT_IDS, DEPARTMENT_NAME, LOCALITY_ID, unitFromInfo, type Unit }
 type Props = {
   open: boolean
   onClose: () => void
-  visibleIds: number[]
+  units: Unit[]
   hidden: Unit[]
   onAdd: (unit: Unit) => void
+  onHide: (unit: Unit) => void
   onUnhide: (id: number) => void
   onShare: () => Promise<boolean>
 }
 
-export function AddUnit({ open, onClose, visibleIds, hidden, onAdd, onUnhide, onShare }: Props) {
+export function AddUnit({ open, onClose, units, hidden, onAdd, onHide, onUnhide, onShare }: Props) {
   const [all, setAll] = useState<PublicUnitBrief[] | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [query, setQuery] = useState('')
   const [busy, setBusy] = useState<number | null>(null)
   const [shared, setShared] = useState<null | 'ok' | 'fail'>(null)
+  const [confirmRemove, setConfirmRemove] = useState<number | null>(null)
 
   useEffect(() => {
     if (!open || all) return
@@ -32,7 +34,7 @@ export function AddUnit({ open, onClose, visibleIds, hidden, onAdd, onUnhide, on
     return () => ctrl.abort()
   }, [open, all])
 
-  const visible = useMemo(() => new Set(visibleIds), [visibleIds])
+  const visible = useMemo(() => new Set(units.map((u) => u.publicId)), [units])
   const hiddenIds = useMemo(() => new Set(hidden.map((h) => h.publicId)), [hidden])
 
   const department = useMemo(
@@ -65,6 +67,32 @@ export function AddUnit({ open, onClose, visibleIds, hidden, onAdd, onUnhide, on
   return (
     <Sheet open={open} onClose={onClose} title="Кофейни">
       <div className="flex flex-col gap-3 pb-2">
+        <Section title={`На экране, ${units.length}`}>
+          {units.map((u) => (
+            <div key={u.publicId} className="flex items-center justify-between gap-3 px-4 py-3">
+              <div className="min-w-0">
+                <p className="truncate text-[14px] font-medium text-ink">{u.name}</p>
+                <p className="truncate text-[12px] text-dim">{u.alias ?? u.address ?? ''}</p>
+              </div>
+              {confirmRemove === u.publicId ? (
+                <div className="flex shrink-0 items-center gap-1.5">
+                  <button type="button" onClick={() => { onHide(u); setConfirmRemove(null) }} className="rounded-full bg-red px-3 py-1.5 text-[13px] font-medium text-white">
+                    Убрать
+                  </button>
+                  <button type="button" onClick={() => setConfirmRemove(null)} className="rounded-full border border-line bg-white px-3 py-1.5 text-[13px] font-medium text-dim">
+                    Нет
+                  </button>
+                </div>
+              ) : (
+                <button type="button" onClick={() => setConfirmRemove(u.publicId)} className="shrink-0 rounded-full border border-line bg-white px-3 py-1.5 text-[13px] font-medium text-down">
+                  Убрать
+                </button>
+              )}
+            </div>
+          ))}
+          {units.length === 0 ? <Empty>На экране нет ни одной точки.</Empty> : null}
+        </Section>
+
         <label className="flex h-11 items-center gap-2 rounded-full border border-line bg-white px-4">
           <Search size={18} className="text-dim" />
           <input
@@ -93,7 +121,7 @@ export function AddUnit({ open, onClose, visibleIds, hidden, onAdd, onUnhide, on
         </Section>
 
         {hidden.length ? (
-          <Section title="Скрытые">
+          <Section title="Убранные">
             {hidden.map((h) => (
               <div key={h.publicId} className="flex items-center justify-between gap-3 px-4 py-3">
                 <div className="min-w-0">

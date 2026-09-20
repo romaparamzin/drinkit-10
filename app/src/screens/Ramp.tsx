@@ -1,8 +1,9 @@
 import { Card } from '@/components/ui/card'
 import { Chip, TrendBadge } from '@/components/ui/badge'
-import { rampSeries, type History } from '@/data/history'
+import { historyStart, rampSeries, type History } from '@/data/history'
 import { fmtDayNum, fmtRub, fmtRubShort } from '@/lib/format'
 import { pct, type Evaluation } from '@/lib/metrics'
+import { addDays } from '@/lib/time'
 import { shortName } from './Summary'
 
 const COLORS = ['#334CDB', '#E8842C', '#1D9E75', '#D85A30', '#7F77DD', '#0F6E56', '#993556', '#BA7517', '#185FA5', '#639922']
@@ -22,6 +23,7 @@ export function Ramp({ evals, history, todayIso, historyFrom, onSelect }: Props)
 
   const series = young.map((e, i) => ({ e, color: COLORS[i % COLORS.length], points: rampSeries(history, e.unit, todayIso) }))
   const allPoints = series.flatMap((s) => s.points)
+  const daysCount = Object.keys(history.days).filter((d) => d < todayIso).length
   const maxWeek = Math.max(4, ...series.map((s) => s.e.ageWeeks ?? 0))
   const maxY = Math.max(1, ...allPoints.map((p) => p.avgRevenue))
   const W = 100
@@ -103,7 +105,17 @@ export function Ramp({ evals, history, todayIso, historyFrom, onSelect }: Props)
         })}
         {series.length === 0 ? <p className="px-1 py-6 text-center text-[14px] text-dim">Молодых точек нет.</p> : null}
       </div>
-      <p className="mt-3 px-1 text-[12px] leading-4 text-dim">Средняя дневная выручка за каждую неделю после открытия. Неделя 1 это первые семь дней работы. Точки с меньше чем пятью днями данных в неделе показаны, но сравнение по ним ненадёжно.</p>
+      <Card className="mt-3 p-4">
+        <p className="text-[13px] font-medium text-ink">Как это считается</p>
+        <p className="mt-1 text-[12px] leading-4 text-dim">
+          Точка на графике это средняя выручка за день внутри одной недели после открытия: сумма выручки известных дней недели, делённая на их число. Неделя 1 это первые семь дней работы. Выручка берётся из публичного API Дринкит, это суммы по чекам с НДС.
+        </p>
+        <p className="mt-2 text-[12px] leading-4 text-dim">
+          {historyFrom
+            ? `Публичный API не отдаёт прошлое, поэтому историю копит сборщик: он работает с ${fmtDayNum(historyStart(historyFrom))} и каждую ночь добавляет два дня, вчерашний и тот же день недели неделю назад. Сейчас есть ${daysCount} ${daysCount === 1 ? 'день' : daysCount < 5 ? 'дня' : 'дней'}, сплошная история с ${fmtDayNum(historyFrom)} накопится к ${fmtDayNum(addDays(historyStart(historyFrom), 7))}, дальше по одному новому дню в сутки. Прошлое до ${fmtDayNum(historyFrom)} восстановить можно только через Dodo IS API.`
+            : 'Публичный API не отдаёт прошлое, историю копит сборщик, данных пока нет.'}
+        </p>
+      </Card>
     </div>
   )
 }

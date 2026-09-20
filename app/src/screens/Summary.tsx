@@ -14,6 +14,7 @@ type Props = {
   evals: Evaluation[]
   updatedAt: number | null
   loading: boolean
+  failedCount: number
   onRefresh: () => void
   onShowStores: (filter: StoresFilter) => void
   historyFrom: string | null
@@ -21,7 +22,7 @@ type Props = {
 
 export const shortName = (name: string) => name.replace(/^Москва\s+/u, '')
 
-export function Summary({ evals, updatedAt, loading, onRefresh, onShowStores, historyFrom }: Props) {
+export function Summary({ evals, updatedAt, loading, failedCount, onRefresh, onShowStores, historyFrom }: Props) {
   const withStats = evals.filter((e) => e.stats)
   const todayIso = withStats[0]?.stats?.date ?? unitNow(3).iso
   const yDate = withStats[0]?.yesterday.date ?? unitNow(3).iso
@@ -63,6 +64,12 @@ export function Summary({ evals, updatedAt, loading, onRefresh, onShowStores, hi
       </header>
 
       <div className="flex flex-col gap-3">
+        {failedCount > 0 ? (
+          <button type="button" onClick={onRefresh} className="flex items-center justify-between gap-3 rounded-2xl border border-[#FAC775] bg-warn-bg px-4 py-3 text-left text-[13px] text-warn">
+            <span>{loading ? 'Повторяю запрос…' : `Нет ответа от API по ${failedCount} ${failedCount === 1 ? 'точке' : 'точкам'}, повторю через несколько секунд.`}</span>
+            <span className="shrink-0 font-medium">Обновить</span>
+          </button>
+        ) : null}
         <StatCard
           label={`Сейчас, ${updatedLabel}`}
           value={withStats.length ? fmtRub(nowSum) : '—'}

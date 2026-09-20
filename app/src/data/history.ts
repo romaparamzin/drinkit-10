@@ -59,6 +59,21 @@ export function earliestDate(h: History): string | null {
   return keys[0] ?? null
 }
 
+/** Дата первого запуска сборщика: самый ранний день истории это «сегодня минус 7» первого запуска. */
+export function historyStart(earliest: string): string {
+  return addDays(earliest, 7)
+}
+
+/** Сколько дней истории уже есть по точке. */
+export function daysWithData(h: History, publicId: number): number {
+  let n = 0
+  for (const recs of Object.values(h.days)) {
+    const r = recs[String(publicId)]
+    if (r && r.orders > 0) n++
+  }
+  return n
+}
+
 export type WeekPoint = { weekIndex: number; from: string; avgRevenue: number; days: number }
 
 export function rampSeries(h: History, unit: Unit, todayIso: string): WeekPoint[] {

@@ -34,7 +34,7 @@ export function Stores({ evals, filter, onClearFilter, onSelect, onAdd }: Props)
       <header className="mb-3 flex items-center justify-between gap-3">
         <div>
           <h1 className="text-[20px] font-semibold tracking-tight text-ink">Точки</h1>
-          <p className="text-[13px] text-dim">сначала те, кому нужно внимание</p>
+          <p className="text-[13px] text-dim">кому нужно внимание, сверху</p>
         </div>
         <button type="button" onClick={onAdd} className="flex h-10 items-center gap-1.5 rounded-full border border-line bg-white px-3.5 text-[14px] font-medium text-brand active:bg-slate-100">
           <Plus size={18} /> Добавить
