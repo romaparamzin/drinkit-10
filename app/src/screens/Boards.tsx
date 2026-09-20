@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Maximize2 } from 'lucide-react'
+import { ExternalLink, Maximize2 } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { boardUrl, type Unit } from '@/lib/units'
 import { cn } from '@/lib/utils'
@@ -74,11 +74,24 @@ export function Boards({ units, mode, onMode, selectedId, onSelect }: Props) {
               loading="eager"
             />
           </Card>
-          <p className="mt-2 px-1 text-[12px] leading-4 text-dim">{selected.alias ?? selected.address ?? ''}. Внутри табло листается лента заказов.</p>
+          <div className="mt-2 flex items-center justify-between gap-3 px-1">
+            <p className="text-[12px] leading-4 text-dim">{selected.alias ?? selected.address ?? ''}. Внутри табло листается лента заказов.</p>
+            <a
+              href={boardUrl(selected)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex shrink-0 items-center gap-1 rounded-full border border-line bg-white px-3 py-1.5 text-[12px] font-medium text-brand"
+            >
+              <ExternalLink size={14} /> В браузере
+            </a>
+          </div>
         </div>
       ) : (
         <p className="py-6 text-center text-[14px] text-dim">Нет точек.</p>
       )}
+      <p className="mt-3 px-1 text-[12px] leading-4 text-dim">
+        Табло загружается несколько секунд: сайт Dodo проверяет браузер. Если табло остаётся пустым, откройте его кнопкой «В браузере» в режиме одной точки.
+      </p>
     </div>
   )
 }
