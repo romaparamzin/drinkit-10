@@ -1,0 +1,449 @@
+{
+  "owner": "paramzinramzi@gmail.com",
+  "country": "ru",
+  "countryNumeric": 643,
+  "savedAt": "2026-09-20",
+  "units": [
+    {
+      "name": "Москва 10-1",
+      "alias": "БЦ Искра-Парк",
+      "publicId": 139657,
+      "uuid": "bea135ab7368af6111ef6919008886f7",
+      "uuidDashed": "bea135ab-7368-af61-11ef-6919008886f7",
+      "departmentId": 392,
+      "organizationName": "Энергия",
+      "organizationUUId": "11EF6918B3879D03F7BF163757C9A8A0",
+      "address": "Ленинградский проспект, 35с1",
+      "state": 1,
+      "type": 1,
+      "square": 93,
+      "beginDateWork": "2024-11-21",
+      "timeZoneShift": 3,
+      "restaurantWeekWorkingTime": [
+        {
+          "DayIndex": 0,
+          "DayAlias": "Monday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 1,
+          "DayAlias": "Tuesday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 2,
+          "DayAlias": "Wednesday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 3,
+          "DayAlias": "Thursday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 4,
+          "DayAlias": "Friday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 5,
+          "DayAlias": "Saturday",
+          "WorkingTimeStart": 30600,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 6,
+          "DayAlias": "Sunday",
+          "WorkingTimeStart": 30600,
+          "WorkingTimeEnd": 79200
+        }
+      ],
+      "boardUrl": "https://motivationboard.drinkit.dodois.io/#/board/643/bea135ab-7368-af61-11ef-6919008886f7",
+      "boardUnitId": "bea135ab-7368-af61-11ef-6919008886f7",
+      "boardVerified": true
+    },
+    {
+      "name": "Москва 10-2",
+      "alias": "ЦДМ | 0 этаж",
+      "publicId": 139861,
+      "uuid": "11f1164eac07f7449878e12d10242360",
+      "uuidDashed": "11f1164e-ac07-f744-9878-e12d10242360",
+      "departmentId": 392,
+      "organizationName": "Поток",
+      "organizationUUId": "11F1164DB849F79D23AF243DAF5F3060",
+      "address": "Театральный проезд, 5с1",
+      "state": 1,
+      "type": 1,
+      "square": 46,
+      "beginDateWork": "2026-07-13",
+      "timeZoneShift": 3,
+      "restaurantWeekWorkingTime": [
+        {
+          "DayIndex": 0,
+          "DayAlias": "Monday",
+          "WorkingTimeStart": 36000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 1,
+          "DayAlias": "Tuesday",
+          "WorkingTimeStart": 36000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 2,
+          "DayAlias": "Wednesday",
+          "WorkingTimeStart": 36000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 3,
+          "DayAlias": "Thursday",
+          "WorkingTimeStart": 36000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 4,
+          "DayAlias": "Friday",
+          "WorkingTimeStart": 36000,
+          "WorkingTimeEnd": 82800
+        },
+        {
+          "DayIndex": 5,
+          "DayAlias": "Saturday",
+          "WorkingTimeStart": 36000,
+          "WorkingTimeEnd": 82800
+        },
+        {
+          "DayIndex": 6,
+          "DayAlias": "Sunday",
+          "WorkingTimeStart": 36000,
+          "WorkingTimeEnd": 79200
+        }
+      ],
+      "boardUrl": "https://motivationboard.drinkit.dodois.io/#/board/643/11f1164e-ac07-f744-9878-e12d10242360",
+      "boardUnitId": "11f1164e-ac07-f744-9878-e12d10242360",
+      "boardVerified": true
+    },
+    {
+      "name": "Москва 10-3",
+      "alias": "Арбат, 1",
+      "publicId": 139855,
+      "uuid": "11f11152b36ab3ef543b986627d97830",
+      "uuidDashed": "11f11152-b36a-b3ef-543b-986627d97830",
+      "departmentId": 392,
+      "organizationName": "Энергия",
+      "organizationUUId": "11EF6918B3879D03F7BF163757C9A8A0",
+      "address": "улица Арбат, 1",
+      "state": 1,
+      "type": 1,
+      "square": 106,
+      "beginDateWork": "2026-05-07",
+      "timeZoneShift": 3,
+      "restaurantWeekWorkingTime": [
+        {
+          "DayIndex": 0,
+          "DayAlias": "Monday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 1,
+          "DayAlias": "Tuesday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 2,
+          "DayAlias": "Wednesday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 3,
+          "DayAlias": "Thursday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 4,
+          "DayAlias": "Friday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 5,
+          "DayAlias": "Saturday",
+          "WorkingTimeStart": 30600,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 6,
+          "DayAlias": "Sunday",
+          "WorkingTimeStart": 30600,
+          "WorkingTimeEnd": 79200
+        }
+      ],
+      "boardUrl": "https://motivationboard.drinkit.dodois.io/#/board/643/11f11152-b36a-b3ef-543b-986627d97830",
+      "boardUnitId": "11f11152-b36a-b3ef-543b-986627d97830",
+      "boardVerified": true
+    },
+    {
+      "name": "Москва 10-5",
+      "alias": "ЖК А.Резиденс",
+      "publicId": 139856,
+      "uuid": "11f112f9b38b7975feb0188c33052d50",
+      "uuidDashed": "11f112f9-b38b-7975-feb0-188c33052d50",
+      "departmentId": 392,
+      "organizationName": "Энергия",
+      "organizationUUId": "11EF6918B3879D03F7BF163757C9A8A0",
+      "address": "Садовническая улица, 82",
+      "state": 1,
+      "type": 1,
+      "square": 60.1,
+      "beginDateWork": "2026-07-10",
+      "timeZoneShift": 3,
+      "restaurantWeekWorkingTime": [
+        {
+          "DayIndex": 0,
+          "DayAlias": "Monday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 1,
+          "DayAlias": "Tuesday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 2,
+          "DayAlias": "Wednesday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 3,
+          "DayAlias": "Thursday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 4,
+          "DayAlias": "Friday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 5,
+          "DayAlias": "Saturday",
+          "WorkingTimeStart": 30600,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 6,
+          "DayAlias": "Sunday",
+          "WorkingTimeStart": 30600,
+          "WorkingTimeEnd": 79200
+        }
+      ],
+      "boardUrl": "https://motivationboard.drinkit.dodois.io/#/board/643/11f112f9-b38b-7975-feb0-188c33052d50",
+      "boardUnitId": "11f112f9-b38b-7975-feb0-188c33052d50",
+      "boardVerified": true
+    },
+    {
+      "name": "Москва 10-7",
+      "alias": "ЖК Слава",
+      "publicId": 139854,
+      "uuid": "11f111519499831bb5c270779dddad90",
+      "uuidDashed": "11f11151-9499-831b-b5c2-70779dddad90",
+      "departmentId": 392,
+      "organizationName": "Энергия",
+      "organizationUUId": "11EF6918B3879D03F7BF163757C9A8A0",
+      "address": "1-я улица Ямского Поля, 1к1",
+      "state": 1,
+      "type": 1,
+      "square": 46,
+      "beginDateWork": "2026-04-13",
+      "timeZoneShift": 3,
+      "restaurantWeekWorkingTime": [
+        {
+          "DayIndex": 0,
+          "DayAlias": "Monday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 1,
+          "DayAlias": "Tuesday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 2,
+          "DayAlias": "Wednesday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 3,
+          "DayAlias": "Thursday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 4,
+          "DayAlias": "Friday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 5,
+          "DayAlias": "Saturday",
+          "WorkingTimeStart": 30600,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 6,
+          "DayAlias": "Sunday",
+          "WorkingTimeStart": 30600,
+          "WorkingTimeEnd": 79200
+        }
+      ],
+      "boardUrl": "https://motivationboard.drinkit.dodois.io/#/board/643/11f11151-9499-831b-b5c2-70779dddad90",
+      "boardUnitId": "11f11151-9499-831b-b5c2-70779dddad90",
+      "boardVerified": true
+    },
+    {
+      "name": "Москва 10-8",
+      "alias": "ЖК Столичные поляны",
+      "publicId": 139857,
+      "uuid": "11f112f9b55b11505ddca2e7d24f11f0",
+      "uuidDashed": "11f112f9-b55b-1150-5ddc-a2e7d24f11f0",
+      "departmentId": 392,
+      "organizationName": "Энергия",
+      "organizationUUId": "11EF6918B3879D03F7BF163757C9A8A0",
+      "address": "улица Поляны, 5Ак1",
+      "state": 1,
+      "type": 1,
+      "square": 93,
+      "beginDateWork": "2026-06-25",
+      "timeZoneShift": 3,
+      "restaurantWeekWorkingTime": [
+        {
+          "DayIndex": 0,
+          "DayAlias": "Monday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 1,
+          "DayAlias": "Tuesday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 2,
+          "DayAlias": "Wednesday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 3,
+          "DayAlias": "Thursday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 4,
+          "DayAlias": "Friday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 5,
+          "DayAlias": "Saturday",
+          "WorkingTimeStart": 30600,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 6,
+          "DayAlias": "Sunday",
+          "WorkingTimeStart": 30600,
+          "WorkingTimeEnd": 79200
+        }
+      ],
+      "boardUrl": "https://motivationboard.drinkit.dodois.io/#/board/643/11f112f9-b55b-1150-5ddc-a2e7d24f11f0",
+      "boardUnitId": "11f112f9-b55b-1150-5ddc-a2e7d24f11f0",
+      "boardVerified": true
+    },
+    {
+      "name": "Москва 10-9",
+      "alias": "ЖК Басманный от Гранель",
+      "publicId": 139909,
+      "uuid": "11f1658ea0ec0dc1c8bf7483d8296930",
+      "uuidDashed": "11f1658e-a0ec-0dc1-c8bf-7483d8296930",
+      "departmentId": 392,
+      "organizationName": "Энергия",
+      "organizationUUId": "11EF6918B3879D03F7BF163757C9A8A0",
+      "address": "Малая Почтовая улица, 12",
+      "state": 1,
+      "type": 1,
+      "square": 91,
+      "beginDateWork": "2026-08-11",
+      "timeZoneShift": 3,
+      "restaurantWeekWorkingTime": [
+        {
+          "DayIndex": 0,
+          "DayAlias": "Monday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 1,
+          "DayAlias": "Tuesday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 2,
+          "DayAlias": "Wednesday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 3,
+          "DayAlias": "Thursday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 4,
+          "DayAlias": "Friday",
+          "WorkingTimeStart": 27000,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 5,
+          "DayAlias": "Saturday",
+          "WorkingTimeStart": 30600,
+          "WorkingTimeEnd": 79200
+        },
+        {
+          "DayIndex": 6,
+          "DayAlias": "Sunday",
+          "WorkingTimeStart": 30600,
+          "WorkingTimeEnd": 79200
+        }
+      ],
+      "boardUrl": "https://motivationboard.drinkit.dodois.io/#/board/643/11f1658e-a0ec-0dc1-c8bf-7483d8296930",
+      "boardUnitId": "11f1658e-a0ec-0dc1-c8bf-7483d8296930",
+      "boardVerified": true
+    }
+  ]
+}

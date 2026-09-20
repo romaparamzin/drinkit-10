@@ -1,0 +1,17 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>board thumbnails</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#f3f4f6}
+h1{font-size:14px;padding:8px 12px;margin:0}
+.thumb{position:relative;width:100%;aspect-ratio:820/960;overflow:hidden;border-radius:12px;background:#fff;margin:0 0 10px}
+.thumb iframe{position:absolute;top:0;left:0;width:820px;height:960px;border:0;transform-origin:0 0;transform:scale(var(--s));pointer-events:none}
+</style></head>
+<body><h1>Обзор табло: десктопная раскладка, уменьшенная под ширину телефона</h1>
+<div class="thumb"><iframe src="https://motivationboard.drinkit.dodois.io/#/board/643/bea135ab-7368-af61-11ef-6919008886f7" title="10-1"></iframe></div>
+<div class="thumb"><iframe src="https://motivationboard.drinkit.dodois.io/#/board/643/11f11152-b36a-b3ef-543b-986627d97830" title="10-3"></iframe></div>
+<div class="thumb"><iframe src="https://motivationboard.drinkit.dodois.io/#/board/643/11f112f9-b55b-1150-5ddc-a2e7d24f11f0" title="10-8"></iframe></div>
+<script>
+function fit(){const w=document.querySelector('.thumb').clientWidth;document.documentElement.style.setProperty('--s',(w/820).toFixed(4));}
+window.addEventListener('resize',fit);fit();
+</script>
+</body></html>

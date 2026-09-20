@@ -1,0 +1,109 @@
+# Проверенные факты по источникам данных (20.09.2026)
+
+Приложение к [PLAN.md](PLAN.md). Всё ниже либо проверено живым запросом, либо прочитано в официальной документации. Где не проверено, написано явно.
+
+## 1. Идентификаторы
+
+- Бизнес Дринкит в Dodo IS (`businessId`, клейм `d:mid`): `c0b18e725258427a8bffea4f73957b0e`. Додо Пицца: `63d4829611ea45c8ae71394860a2481c`.
+- Код страны Россия: `ru` (ISO alpha‑2) в Dodo IS API, `643` (ISO numeric) в табло мотивации и публичном API.
+- У каждой кофейни три идентификатора одного объекта:
+  - числовой `Id` публичного API (пример: Москва 0-3 → `1138`);
+  - UUID без дефисов в Dodo IS API и публичном API (`000D3AAF8EF5BB2E11EC0E7EAD6A54FF`);
+  - тот же UUID с дефисами в нижнем регистре в табло мотивации (`000d3aaf-8ef5-bb2e-11ec-0e7ead6a54ff`).
+
+## 2. Публичный API Дринкит (без авторизации)
+
+База: `https://publicapi.drinkit.dodois.io/ru/api/v1/`. Спецификация: `https://publicapi.dodois.io/specification/reference/publicapi.yaml`, Swagger UI: `https://publicapi.dodois.io/api/index.html`. Заголовок `Access-Control-Allow-Origin: *` проверен, значит можно звать прямо из браузера телефона.
+
+| Метод | Назначение | Проверено |
+|---|---|---|
+| `GetLocalities` | города с числовым `Id` (Москва = 1) | да |
+| `GetUnitsByLocalityId/{localityId}` | кофейни города: `Id`, `UUId`, `Name`, `State` (1 = открыта), `Type` (1 = кофейня), `Address` | да, 204 записи по Москве, 166 активных |
+| `GetUnitById/{id}`, `unitinfo/{id}`, `unitinfo/all` | карточка точки: организация, адрес, площадь, часы работы, `TimeZoneShift`, `StoreManager` | да |
+| `OperationalStatisticsForTodayAndWeekBefore/{id}` | выручка, заказы, средний чек: `today`, `yesterday`, `yesterdayToThisTime`, `weekBefore`, `weekBeforeToThisTime`; каждый блок делится на `stationary` и `delivery` | да |
+| `OperationalStatisticsByUnit/{id}` | выручка и заказы сегодня, `AvgPizzaTimePreparationInMin` | да |
+| `FinancialMetrics` | выручка всей сети: месяц с начала, прошлый месяц, год назад, сегодня, число работающих точек | да |
+| `products/{id}/top?start=YYYY-MM-DD&end=YYYY-MM-DD` | топ продуктов точки по числу заказов с картинками | да |
+| `orders/countBySource/{y}/{m}/{d}` | заказы сети по источникам за день | да |
+| `pizzeriascount/{y}/{m}` | число точек сети по месяцам | да |
+| `EmployeesOnShift/{id}`, `OrdersProcessing/{id}` | помечены `x-internal`, вернули пустые массивы | частично |
+| `ratings` | вернул 500 | нет |
+
+Живой пример, Москва 0-3 (`1138`), 20.09.2026 около 09:55 МСК:
+
+```json
+{
+  "unitId": 1138,
+  "date": "2026-09-20T00:00:00",
+  "today":               {"revenue": 345.00,   "orderCount": 1,   "avgCheck": 345.00},
+  "yesterdayToThisTime": {"revenue": 3237.00,  "orderCount": 9,   "avgCheck": 359.67},
+  "yesterday":           {"revenue": 87270.00, "orderCount": 142, "avgCheck": 614.58},
+  "weekBeforeToThisTime":{"revenue": 1257.00,  "orderCount": 4,   "avgCheck": 314.25},
+  "weekBefore":          {"revenue": 49367.00, "orderCount": 91,  "avgCheck": 542.49}
+}
+```
+(поля `stationaryRevenue`, `deliveryRevenue` и счётчики опущены для краткости; у кофеен доставка нулевая).
+
+**Семантика блоков, проверена 20.09.2026.** `yesterday` это вчера целиком, `weekBefore` это **сегодня минус 7 дней** (тот же день недели, что сегодня), `yesterdayToThisTime` и `weekBeforeToThisTime` это те же дни, но накопительно к текущему часу. Проверка: сумма `yesterday.orderCount` по всем 300 точкам сети равна публичному итогу `orders/countBySource/2026/9/19` (57 990), сумма `weekBefore.orderCount` равна итогу за 13.09, воскресенье (51 081), а не за 12.09, субботу (54 952). Следствие: сравнивать `yesterday` с `weekBefore` нельзя, это разные дни недели; корректные пары из одного ответа: `today` против `weekBeforeToThisTime` и `today` против `yesterdayToThisTime`.
+
+`FinancialMetrics` по сети Дринкит Россия на ту же дату: месяц с начала 607 795 064 ₽, август 2026 — 874 049 122 ₽, сентябрь 2025 — 352 068 097 ₽, работающих точек 221.
+
+Ограничения: нет истории по дням и месяцам на точку, только «сегодня / вчера / неделю назад». Историю нужно копить самим (так делает dodostats, опрашивая API каждые 30 минут) или брать из Dodo IS API.
+
+## 3. Табло мотивации
+
+- Адрес списка: `https://motivationboard.drinkit.dodois.io/` — открыт без логина, 250 кофеен (Россия и Казахстан), сгруппированы по городам.
+- Табло кофейни: `https://motivationboard.drinkit.dodois.io/#/board/643/{uuid-с-дефисами}`.
+- Внутренний JSON: `GET /api/v1/stores` (страны и все точки с `id`, `name`, `alias`, `utcOffset`) и `GET /api/v1/boards?countryId=643&unitId={uuid}&locale=ru`.
+- Поля `boards`: `lastHourCounter`, `todayCounter`, `yesterdayCounter` (каждый: `readySecondsAvg`, `readyOrderCount`, `ratedOrderCounts{fast,normal,slow}`), `orderRatingCounter{likeCount,dislikeCount}`, `productWithinStandardPercentageCounter`, `fraudPercentageCounter`, `stationStatistics`, `products`, `ratingScaleTags`, `unitName`, `unitAlias`. Выручки нет.
+- Защита: сайт и его API за антибот‑прокси Servicepipe (JS‑челлендж, cookies `spid`/`spsc`). `curl` к `/api/v1/*` получает HTML «Forbidden», из браузера после челленджа всё работает.
+- Встраивание: у HTML и API нет заголовков `X-Frame-Options` и `Content-Security-Policy` (проверено same‑origin fetch). Локальная страница с двумя `<iframe>` табло отрисовалась корректно на ширине 1400 px и 375 px.
+- Раскладка табло зависит от ширины фрейма. При ширине телефона (375 px) табло рисует длинную одноколоночную страницу: заголовок, большое время за час, сравнение со вчера, среднее за день, карточка нормативов, полоса «медленно / нормально / быстро», лайки, лента заказов; полоса оказывается примерно через полтора экрана и требует прокрутки внутри фрейма. При ширине фрейма 820 px раскладка «планшетная»: время, нормативы и полоса идут подряд и умещаются в первый экран; у точек с карточкой «Нагрузка по станциям» полоса сдвигается ниже, поэтому для мини-табло нужен фрейм высотой около 960 px, уменьшенный CSS‑трансформацией под ширину телефона (проверено на трёх точках владельца 20.09.2026).
+- Официального аналога табло в Dodo IS API нет. Ближайшие методы: `production/orders-handover-statistics` (время выдачи; в описании исключены напитки, применимость к кофейням не проверена) и `customer-feedback/customer-ratings` (средняя оценка, для Дринкит в диапазоне 0..1).
+
+## 4. Dodo IS API (OAuth 2.0)
+
+Документация: `https://docs.dodois.io/` (Stoplight; боковое меню видно только на широком экране). Базы для Дринкит: Россия `https://api.dodois.io/drinkit/ru`, Казахстан `https://api.dodois.io/drinkit/kz`, прочие страны на `api.dodois.com`. Postman‑коллекция: `github.com/dodobrands/dodo-api-postman-collection`. Примеры на Python: `github.com/dodobrands/partner-api-examples`. Статус сервисов: `https://status.dodois.io/`. Релиз‑ноты API: ссылка «Release Notes» на главной docs.dodois.io (buildin.ai). Поддержка: support@dodopizza.com, маркетплейс: marketplace@dodois.io.
+
+### 4.1 Авторизация
+
+- Discovery: `https://auth.dodois.io/.well-known/openid-configuration`. Authorize `…/connect/authorize`, token `…/connect/token`, userinfo `…/connect/userinfo`, device `…/connect/deviceauthorization`, revocation `…/connect/revocation`.
+- Grant types по discovery: `authorization_code`, `client_credentials`, `refresh_token`, `implicit`, device code, CIBA. PKCE: `S256`.
+- Кабинет разработчика: `https://marketplace.dodois.io/dev/apps` (в шапке docs ведёт на `/manage/apps`). Приложение создаётся с конкретным способом авторизации; client_id от Authorization Code не подходит для Device Flow и наоборот.
+- Из руководства «API → Авторизация»: refresh‑токен приходит только со scope `offline_access`; **refresh‑токен одноразовый и перестаёт действовать даже после неудачного ответа**; рекомендовано обновлять access‑токен до половины срока жизни, для фонового накопления данных раз в 3 часа; в примере ответа `expires_in: 86400`.
+- Client Credentials: client_id для него не выдаётся через кабинет, только по письму в marketplace@dodois.io; такой токен не привязан к пользователю и не имеет доступов по ролям и заведениям, поэтому большинство методов недоступно.
+- Роли (из руководства): `Employee`, `ShiftManager`, `OfficeManager`, `DepartmentAdmin`. Финансовые методы в документации помечены «Division administrator, Store Manager».
+- Клеймы id_token: `d:mid` (бизнес), `d:cid` (страна), `d:empuid` (сотрудник), `d:obr` (объектные роли `ObjectUuid:ObjectType:UserRole`).
+- Scopes из discovery, относящиеся к задаче (точная привязка метод → scope в документации не показана, уточняется в кабинете и тестом): `openid`, `offline_access`, `profile`, `email`, `shared`, `sales`, `unit:read`, `unitshifts:read`, `production`, `productionefficiency`, `deliverystatistics`, `roles`, `user.role:read`, `organizationstructure`, `staffshifts:read`, `incentives`, `controlratingsapi`.
+
+Auth API (`https://api.dodois.io/auth`): `GET /roles/units` (заведения пользователя), `GET /roles/list` (роли пользователя), `GET /roles/catalog` (справочник ролей). Схема ответа `/roles/units` в открытой документации не отображена, метод есть в Postman‑коллекции.
+
+### 4.2 Заведения
+
+`GET {base}/units/stores?businessId=c0b18e725258427a8bffea4f73957b0e&countryId=ru&unitStates=Open&skip=0&take=100`. Ответ `stores[]`: `id` (32 hex), `name`, `alias`, `state`, `organizationId`, `organizationName`, `firstOperatingDay`, `location`, `salesChannels`, `dateTimeInfo{timeZoneShift}`, `workingSchedule`, `directors[]`; пагинация через `isEndOfListReached`.
+
+### 4.3 Продажи и выручка
+
+| Метод | Параметры | Ответ | Лимиты |
+|---|---|---|---|
+| `GET {base}/finances/sales/units/daily` | `fromDate`, `toDate` (даты, включительно), `units` | `result[]{date, unitId, sales (без НДС), ordersCount, salesBreakdown[]{orderSource, salesChannel, paymentMethod, sales, ordersCount}}` | период ≤ 10 дней, ≤ 30 заведений |
+| `GET {base}/finances/sales/units/monthly` | `fromDate`, `toDate`, `units` | `result[]{year, month, unitId, sales, ordersCount, salesBreakdown[]}` | период ≤ 62 дней, ≤ 30 заведений |
+| `GET {base}/finances/sales/units` | `from`, `to` (date‑time, `to` исключающая), `units` | `result[]{unitId, sales, ordersCount, salesBreakdown[]}` | период ≤ 62 дней, ≤ 30 заведений |
+| `GET {base}/accounting/sales` | `from`, `to`, `units`, `orderSource?`, `salesChannel?`, `skip`, `take≤1000` | заказ за заказом: `orderId`, `soldAtLocal`, `unitId`, `shiftId`, `cashBox*`, `paymentMethod`, `salesChannel`, `orderSource`, `aggregatorName`, `products[]{price, priceWithDiscount, taxRate, taxValue, discount, combo}` | период ≤ 31 дня, ≤ 30 заведений, роли Division administrator / Store Manager |
+
+В финансовых методах учитываются каналы Delivery, Dine‑in, Takeaway; источники CallCenter, Website, Dine‑in, MobileApp, Manager, Aggregator, Kiosk, ChatBot; оплаты Online, Cash, Card, Aggregator; замены бракованных заказов исключены.
+
+### 4.4 Проценты и качество
+
+- `GET https://api.dodois.io/customer-feedback/lfl/by-units?from=YYYY-MM-DD&to=YYYY-MM-DD&units=…&granularity=Day|Week|Month` → `lfl[]{unitId, countryId, date, lflRevenue, lflOrder}` (доли, 0.05 = +5 %). ≤ 30 заведений.
+- `GET https://api.dodois.io/customer-feedback/customer-ratings?from&to&units` → `customerRatings[]{unitId, avgDineInOrderRate, avgDeliveryOrderRate, dineInRateCount, deliveryRateCount}`; для Дринкит шкала 0..1; за сегодня недоступно; ≤ 100 заведений, ≤ 31 дня.
+- `GET https://api.dodois.io/dodopizza/customer-feedback/recent-feedbacks?units` → 10 последних отзывов на заведение (в пути `dodopizza`; вариант пути для Дринкит не проверен).
+- `GET {base}/production/orders-handover-statistics?from&to&units&salesChannels` → `avgCookingTime`, `avgHeatedShelfTime`, `avgOrderHandoverTime`, `ordersCount` (секунды). Напитки и неприготовляемые продукты исключены из расчёта.
+- `GET {base}/units/shifts?from&to&units` → смены заведений: `startedAtLocal`, `endedAtLocal`, `isOpen`, `openedByUserId`.
+- `GET {base}/units/month-goals?unit&month&year` и `PATCH` — цели на месяц (план для сравнения факт/план).
+
+## 5. dodostats.ru как референс
+
+- Только пиццерии Додо (1520 активных на момент просмотра), 20+ стран. Данные «из открытого API Dodo IS», обновление каждые 30 минут.
+- Список: название, страна, адрес, дата открытия, выручка за прошлый месяц. Страница точки: реквизиты, карта, часы работы, таблица выручки и заказов по месяцам за 18 месяцев, таблица по дням за текущий период. Процентов изменений нет.
+- Вывод для нашего продукта: ниша «Дринкит + проценты + табло» свободна; подход с накоплением истории из публичного API рабочий, но для честных месяцев и года лучше Dodo IS API.

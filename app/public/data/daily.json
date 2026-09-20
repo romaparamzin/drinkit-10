@@ -1,0 +1,237 @@
+{
+ "updatedAt": "2026-09-20T08:00:02.406Z",
+ "units": {
+  "139657": {
+   "name": "Москва 10-1",
+   "alias": "БЦ Искра-Парк",
+   "departmentId": 392
+  },
+  "139854": {
+   "name": "Москва 10-7",
+   "alias": "ЖК Слава",
+   "departmentId": 392
+  },
+  "139855": {
+   "name": "Москва 10-3",
+   "alias": "Арбат, 1",
+   "departmentId": 392
+  },
+  "139856": {
+   "name": "Москва 10-5",
+   "alias": "ЖК А.Резиденс",
+   "departmentId": 392
+  },
+  "139857": {
+   "name": "Москва 10-8",
+   "alias": "ЖК Столичные поляны",
+   "departmentId": 392
+  },
+  "139860": {
+   "name": "Москва 10-4",
+   "alias": null,
+   "departmentId": 392
+  },
+  "139861": {
+   "name": "Москва 10-2",
+   "alias": "ЦДМ | 0 этаж",
+   "departmentId": 392
+  },
+  "139909": {
+   "name": "Москва 10-9",
+   "alias": "ЖК Басманный от Гранель",
+   "departmentId": 392
+  },
+  "139910": {
+   "name": "Москва 10-10",
+   "alias": null,
+   "departmentId": 392
+  },
+  "139919": {
+   "name": "Москва 10-11",
+   "alias": null,
+   "departmentId": 392
+  },
+  "139946": {
+   "name": "Москва 10-12",
+   "alias": null,
+   "departmentId": 392
+  },
+  "139947": {
+   "name": "Москва 10-13",
+   "alias": null,
+   "departmentId": 392
+  },
+  "139964": {
+   "name": "Москва 10-15",
+   "alias": null,
+   "departmentId": 392
+  },
+  "139966": {
+   "name": "Москва 10-14",
+   "alias": null,
+   "departmentId": 392
+  },
+  "139970": {
+   "name": "Мытищи 3-1",
+   "alias": null,
+   "departmentId": 392
+  }
+ },
+ "days": {
+  "2026-09-13": {
+   "139657": {
+    "revenue": 84621,
+    "orders": 152,
+    "avgCheck": 556.72
+   },
+   "139854": {
+    "revenue": 69205,
+    "orders": 142,
+    "avgCheck": 487.36
+   },
+   "139855": {
+    "revenue": 191035,
+    "orders": 381,
+    "avgCheck": 501.4
+   },
+   "139856": {
+    "revenue": 47427,
+    "orders": 95,
+    "avgCheck": 499.23
+   },
+   "139857": {
+    "revenue": 208958,
+    "orders": 368,
+    "avgCheck": 567.82
+   },
+   "139860": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139861": {
+    "revenue": 111071,
+    "orders": 237,
+    "avgCheck": 468.65
+   },
+   "139909": {
+    "revenue": 56006,
+    "orders": 100,
+    "avgCheck": 560.06
+   },
+   "139910": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139919": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139946": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139947": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139964": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139966": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139970": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   }
+  },
+  "2026-09-19": {
+   "139657": {
+    "revenue": 76833,
+    "orders": 151,
+    "avgCheck": 508.83
+   },
+   "139854": {
+    "revenue": 71003,
+    "orders": 160,
+    "avgCheck": 443.77
+   },
+   "139855": {
+    "revenue": 218329,
+    "orders": 417,
+    "avgCheck": 523.57
+   },
+   "139856": {
+    "revenue": 41752,
+    "orders": 83,
+    "avgCheck": 503.04
+   },
+   "139857": {
+    "revenue": 196303,
+    "orders": 371,
+    "avgCheck": 529.12
+   },
+   "139860": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139861": {
+    "revenue": 164495,
+    "orders": 335,
+    "avgCheck": 491.03
+   },
+   "139909": {
+    "revenue": 102590,
+    "orders": 198,
+    "avgCheck": 518.13
+   },
+   "139910": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139919": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139946": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139947": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139964": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139966": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139970": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   }
+  }
+ },
+ "source": "publicapi.drinkit.dodois.io; weekBefore = сегодня минус 7 дней"
+}

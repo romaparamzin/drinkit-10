@@ -1,0 +1,977 @@
+openapi: 3.0.1
+info:
+  title: PublicApi
+  description: Clone Dodo.Api
+  version: v1
+  contact:
+    email: support@dodopizza.com
+    name: Dodo Brands
+    url: 'https://dodobrands.io/'
+paths:
+  '/{countryCode}/api/v1/GetCountryById/{countryId}':
+    get:
+      summary: Информация о стране
+      tags:
+        - Department
+      operationId: GetCountryById
+      parameters:
+        - $ref: '#/components/parameters/countryCode'
+        - $ref: '#/components/parameters/countryId'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Id:
+                    type: integer
+                    format: int32
+                    description: Цифровой код страны в формате ISO 3166
+                    example: 643
+                  PhoneCode:
+                    type: string
+                    description: Телефонный код страны
+                    example: '+7'
+                  PhoneMask:
+                    type: string
+                    description: Маска телефона
+                    example: +7 (999) 999-99-99
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '404':
+          description: Not Found. CountryCode or countryId not found
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      description: Возвращает информацию о форматах в стране
+  '/{countryCode}/api/v1/GetLocalities':
+    get:
+      summary: Список городов
+      tags:
+        - Department
+      operationId: GetLocalities
+      parameters:
+        - $ref: '#/components/parameters/countryCode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Id:
+                      type: integer
+                      format: int32
+                      description: Численный идентификатор города
+                      example: 43
+                    UUId:
+                      type: string
+                      format: uuid
+                      minLength: 32
+                      maxLength: 32
+                      pattern: '[0-9a-f]{32}'
+                      example: 2a69836ab8f583ec11ed90098ae24dff
+                      description: UUId идентификатор города
+                    Name:
+                      type: string
+                      description: Название города
+                      example: Москва
+                    TranslitAlias:
+                      type: string
+                      description: Транслитерация названия города на английский язык
+                      example: Moscow
+        '204':
+          $ref: '#/components/responses/NoContent'
+        '404':
+          description: Not Found. CountryCode not found
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      description: Возвращает список городов страны
+  '/{countryCode}/api/v1/GetUnitsByLocalityId/{localityId}':
+    get:
+      tags:
+        - Department
+      operationId: GetUnitsByLocalityId
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: localityId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/Departments':
+    get:
+      tags:
+        - Department
+      operationId: AllDepartmentsInfo
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/GetDepartmentById/{departmentId}':
+    get:
+      tags:
+        - Department
+      operationId: GetDepartmentById
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: departmentId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/GetUnitById/{unitId}':
+    get:
+      tags:
+        - Department
+      operationId: GetUnitById
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/EmployeesOnShift/{unitId}':
+    get:
+      tags:
+        - Employee
+      operationId: EmployeesOnShift
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+      x-internal: true
+  '/{countryCode}/api/v1/AllEmployeesOnShift/{unitId}':
+    get:
+      tags:
+        - Employee
+      operationId: AllEmployeesOnShift
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+      x-internal: true
+  '/{countryCode}/api/v1/FinancialMetrics':
+    get:
+      tags:
+        - FinancialMetrics
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/OperationalStatisticsByUnit/{unitId}':
+    get:
+      tags:
+        - FinancialMetrics
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/OperationalStatisticsForTodayAndWeekBefore/{unitId}':
+    get:
+      tags:
+        - FinancialMetrics
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/OperationalStatistics':
+    get:
+      tags:
+        - FinancialMetrics
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/metaproducts/{metaProductUUId}/statistics':
+    get:
+      tags:
+        - MetaProduct
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: metaProductUUId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: start
+          in: query
+          schema:
+            type: string
+        - name: end
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/metaproducts/{metaProductUUId}/products':
+    get:
+      tags:
+        - MetaProduct
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: metaProductUUId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/orders/countBySource/{year}/{month}/{day}':
+    get:
+      tags:
+        - Order
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: month
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: day
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/OrdersProcessing/{unitId}':
+    get:
+      tags:
+        - OrderProcessing
+      operationId: OrdersProcessing
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/organizationsInfo':
+    get:
+      tags:
+        - OrganizationInfo
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+      x-internal: true
+  '/{countryCode}/api/v1/products/top':
+    get:
+      tags:
+        - Product
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: start
+          in: query
+          schema:
+            type: string
+        - name: end
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/products/{unitId}/top':
+    get:
+      tags:
+        - Product
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: start
+          in: query
+          schema:
+            type: string
+        - name: end
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/ratings':
+    get:
+      tags:
+        - Ratings
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+      x-internal: true
+  '/{countryCode}/api/v1/unitinfo':
+    get:
+      tags:
+        - UnitInfo
+      operationId: AllUnitInfoInOpenedDepartments
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/unitinfo/all':
+    get:
+      tags:
+        - UnitInfo
+      operationId: AllUnitInfo
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                x-examples: null
+                items:
+                  type: object
+                  properties:
+                    Id:
+                      type: integer
+                      description: Идентификатор Отдела
+                      example: 3
+                    DepartmentId:
+                      type: integer
+                      description: Идентификатор Департамента
+                      example: 2
+                    DepartmentUUId:
+                      type: string
+                      description: Идентификатор Департамента в формате UUID
+                      example: 000D3A240C719A8711E68ABA13FC4A39
+                    DepartmentState:
+                      type: integer
+                      description: Текущее состояние Департамента
+                      example: 1
+                    OrganizationName:
+                      type: string
+                      description: Название Организации
+                      example: '"\"Пицца Венчур\""'
+                    UUId:
+                      type: string
+                      description: Идентификатор Отдела в формате UUID
+                      example: 000D3A240C719A8711E68ABA13F7FE13
+                    Name:
+                      type: string
+                      description: Название Отдела
+                      example: Сыктывкар-1
+                    Alias:
+                      type: string
+                      description: Дополнительное название Отдела
+                      example: Сыктывкар-1
+                    TranslitAlias:
+                      type: string
+                      description: Транслитерированное название Отдела
+                      example: '"pervomayskaya85"'
+                    Approve:
+                      type: boolean
+                      description: Дано разрешение на открытие Отдела
+                    Address:
+                      type: string
+                      description: Адрес с форматированием
+                      example: '"ул. Первомайская, 85"'
+                    AddressText:
+                      type: string
+                      description: Полный адрес
+                      example: '"Первомайская, 85 (ул. Первомайская, 85)"'
+                    Square:
+                      type: number
+                      description: Площадь точки в метрах в квадрате
+                      example: 224
+                    Orientation:
+                      type: string
+                      description: Оринтиентир для поиска здания
+                      example: '"Напротив центрального бассейна."'
+                      nullable: true
+                    State:
+                      type: integer
+                      enum:
+                        - 0
+                        - 1
+                      description: Текущее состояние Отдела
+                    Type:
+                      type: integer
+                      description: Тип Отдела
+                      enum:
+                        - 0
+                        - 1
+                        - 2
+                        - 3
+                        - 4
+                        - 5
+                        - 6
+                    FormatName:
+                      type: string
+                      description: |
+                        Название формата пиццерии: Додо Пицца Экспресс, Доставка и Самовывоз, Городская пиццерия, Додо Пицца и Кофе, семейная пиццерия и т.д.
+                      example: '"Городская пиццерия"'
+                      nullable: true
+                    MetroStations:
+                      type: array
+                      description: ID и Name станции метро из внутреннего справочника
+                      items:
+                        type: object
+                    AddressDetails:
+                      description: Структурированная информация об адресе
+                      type: object
+                      nullable: true
+                      properties:
+                        LocalityId:
+                          type: integer
+                          description: Идентификатор города
+                        LocalityName:
+                          type: string
+                          description: Название города
+                        StreetId:
+                          type: integer
+                          description: Идентификатор улицы
+                        StreetName:
+                          type: string
+                          description: Название улицы
+                        StreetType:
+                          type: string
+                          description: Тип улицы
+                        StreetTypeDecrease:
+                          type: string
+                          description: Тип улицы (сокращенно)
+                        HouseNumber:
+                          type: string
+                          description: Номер здания
+                        StreetTypeId:
+                          type: integer
+                          description: Тип улицы в формате строки
+                    DeliveryEnabled:
+                      type: boolean
+                      description: Работает ли на доставку
+                    StationaryEnabled:
+                      type: boolean
+                      description: Работает ли ресторан
+                    IsExpress:
+                      type: boolean
+                      description: Является Экспресс форматом
+                    WebCameraUrl:
+                      type: string
+                      description: Ссылка на камеру в сервисе iVideon
+                      nullable: true
+                    RestaurantWeekWorkingTime:
+                      type: array
+                      description: Расписание работы Отдела в ресторане
+                      items:
+                        type: object
+                        description: Расписание
+                        properties:
+                          DayIndex:
+                            type: integer
+                            description: 'Порядковый Идентификатор дня, где 0 - понедельник, 6 - воскресенье'
+                          DayAlias:
+                            type: string
+                            description: Название дня
+                          WorkingTimeStart:
+                            type: integer
+                            description: 'Время начала работы Отдела на доставку. В секундах с начала дня (с 00:00).'
+                          WorkingTimeEnd:
+                            type: integer
+                            description: 'Время конца работы Отдела на доставку. В секундах с начала дня (с 00:00).'
+                    DeliveryWeekWorkingTime:
+                      type: array
+                      description: Расписание работы Отдела на доставку
+                      items:
+                        type: object
+                        description: Расписание
+                        properties:
+                          DayIndex:
+                            type: integer
+                            description: 'Порядковый Идентификатор дня, где 0 - понедельник, 6 - воскресенье'
+                          DayAlias:
+                            type: string
+                            description: Название дня
+                          WorkingTimeStart:
+                            type: integer
+                            description: 'Время начала работы Отдела на доставку. В секундах с начала дня (с 00:00).'
+                          WorkingTimeEnd:
+                            type: integer
+                            description: 'Время конца работы Отдела на доставку. В секундах с начала дня (с 00:00).'
+                    IsAroundClockRestaurantWorkTime:
+                      type: boolean
+                      description: Ресторан работает круглосуточно
+                    IsAroundClockDeliveryWorkTime:
+                      type: boolean
+                      description: Доставка работает круглосуточно
+                    BeginDateWork:
+                      type: string
+                      description: Первый день работы Отдела. Или 1.01.0001 если Отдел еще не открыт
+                    CardPaymentPickup:
+                      type: boolean
+                      description: Доступна ли оплата картой при получении заказа на Самовывоз
+                      nullable: true
+                    ClientTreatment:
+                      type: string
+                      description: Обращение к клиенту в коммуникациях
+                      enum:
+                        - Name
+                        - RandomImage
+                        - DefaultName
+                    TerminalAtCourier:
+                      type: boolean
+                      description: Используется ли курьерами терминал для оплаты по карте
+                    MinDeliveryOrderPrice:
+                      type: number
+                      description: Минимальная сумма доставки
+                      example: 549
+                      nullable: true
+                    ManagerPhoneNumber:
+                      type: string
+                      description: Телефон Менеджера Отдела. Возвращает телефоны в разных форматах.
+                      nullable: true
+                    OrderTypes:
+                      type: array
+                      description: Доступные типы заказов в Отделе
+                      items:
+                        type: string
+                        enum:
+                          - '"Stationary"'
+                          - '"Pickup"'
+                          - '"Delivery"'
+                    Location:
+                      description: Координаты Отдела
+                      type: object
+                      nullable: true
+                      properties:
+                        Latitude:
+                          type: number
+                          example: 61.66572
+                        Longitude:
+                          type: number
+                          example: 50.83164
+                    OrganizationId:
+                      type: integer
+                      description: Идентификатор Организации
+                    OrganizationUUId:
+                      type: string
+                      description: Идентификатор Организации в формате UUID
+                    CountryId:
+                      type: integer
+                      description: Идентификатор страны
+                    EmployeeCount:
+                      type: integer
+                      description: Количество работающих в Отделе сотрудников
+                    TimeZoneShift:
+                      type: integer
+                      description: 'Часовой пояс, в котором находится Отдел.'
+                      example: 3
+                    CurrentDateTime:
+                      type: string
+                      description: 'Текущее время в часовом поясе, где находится Отдел'
+                      example: '"2022-06-06T10:07:35.5451046"'
+                    MenuSpecializationType:
+                      type: integer
+                      description: Специализация кухни
+                      enum:
+                        - 0
+                        - 1
+                        - 2
+                        - 3
+                    StoreManager:
+                      description: Имя менеджера (используется не везде)
+                      type: string
+                      nullable: true
+                    IsTemporarilyClosed:
+                      type: boolean
+                      description: 'Метка о том, что Отдел временно закрыт'
+                  required:
+                    - Id
+                    - DepartmentId
+                    - DepartmentUUId
+                    - DepartmentState
+                    - OrganizationName
+                    - UUId
+                    - Name
+                    - Alias
+                    - Approve
+                    - State
+                    - Type
+                    - DeliveryEnabled
+                    - StationaryEnabled
+                    - IsExpress
+                    - TerminalAtCourier
+                    - OrganizationId
+                    - OrganizationUUId
+                    - CountryId
+                    - EmployeeCount
+                    - TimeZoneShift
+                    - MenuSpecializationType
+      summary: Справочник пиццерий
+      description: |-
+        Возвращает все открытые и уже закрыте Отделы с дополнительной информацией.
+
+        **Дополнительная информация:**
+
+        `countryCode` необходимо указывать в формате ISO 3166
+
+        `State` может принимать значения:<br>
+        0 - Отдел закрыт<br>
+        1 - Отдел открыт
+
+        `Type` может принимать значения:<br>
+        0 - офис<br>
+        1 - пиццерия/кофейня/донер<br>
+        2 - кол-центр<br>
+        3 - склад<br>
+        4 - служба доставки<br>
+        5 - <br>
+        6 - ПРЦ<br>
+
+        `MenuSpecializationType` может принимать значения:<br>
+        0 - без специализации<br>
+        1 - халяльное меню<br>
+        2 - полухаляльное меню<br>
+        3 - европейское меню<br>
+    parameters:
+      - schema:
+          type: string
+        name: countryCode
+        in: path
+        required: true
+  '/{countryCode}/api/v1/unitinfo/{unitId}':
+    get:
+      tags:
+        - UnitInfo
+      operationId: UnitInfo
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/unitstate/{unitId}':
+    get:
+      tags:
+        - UnitInfo
+      operationId: PizzeriaWithWorkState
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/unitinfo/firstOrders/{unitId}':
+    get:
+      tags:
+        - UnitInfo
+      operationId: UnitFirstOrders
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/unitinfo/pizzerias':
+    get:
+      tags:
+        - UnitInfo
+      operationId: AllPizzeriaInfo
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/unitinfo/pizzerias/active':
+    get:
+      tags:
+        - UnitInfo
+      operationId: ActivePizzeriaInfo
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/unitinfo/pizzeria/{pizzeriaUUId}':
+    get:
+      tags:
+        - UnitInfo
+      operationId: PizzeriaInfo
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: pizzeriaUUId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/unitinfo/count':
+    get:
+      tags:
+        - UnitInfo
+      operationId: UnitsCount
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  '/{countryCode}/api/v1/pizzeriascount/{year}/{month}':
+    get:
+      tags:
+        - UnitInfo
+      parameters:
+        - name: countryCode
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: month
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+components:
+  parameters:
+    countryCode:
+      name: countryCode
+      in: path
+      required: true
+      schema:
+        type: string
+        example: ru
+      description: Двухсимвольный код страны в формате ISO 3166
+    countryId:
+      name: countryId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int32
+        example: 643
+      description: Цифровой код страны в формате ISO 3166
+  responses:
+    NoContent:
+      description: Request timed out
+    TooManyRequests:
+      description: 'Too many requests, try again later'
+    ServiceUnavailable:
+      description: 'Seems like DB is too busy right now, try later'
+    InternalServerError:
+      description: Unexpected error
+  securitySchemes: {}
+servers:
+  - url: /
+    description: Current
+  - url: 'https://publicapi.dodois.io/'
+    description: Dodo Pizza
+  - url: 'https://publicapi.doner.dodois.io/'
+    description: Doner42
+  - url: 'https://publicapi.drinkit.dodois.io/'
+    description: Drinkit
