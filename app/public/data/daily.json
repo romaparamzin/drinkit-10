@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-10T06:20:17.703Z",
+ "updatedAt": "2026-10-11T06:23:16.275Z",
  "units": {
   "139657": {
    "name": "Москва 10-1",
@@ -1737,9 +1737,9 @@
     "avgCheck": 526.78
    },
    "139855": {
-    "revenue": 205249,
-    "orders": 388,
-    "avgCheck": 528.99
+    "revenue": 204814,
+    "orders": 387,
+    "avgCheck": 529.24
    },
    "139856": {
     "revenue": 34206,
@@ -1797,6 +1797,11 @@
     "avgCheck": 0
    },
    "139970": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139984": {
     "revenue": 0,
     "orders": 0,
     "avgCheck": 0
@@ -2170,6 +2175,88 @@
     "revenue": 110547,
     "orders": 254,
     "avgCheck": 435.22
+   },
+   "139910": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139919": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139946": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139947": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139964": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139966": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139970": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139984": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   }
+  },
+  "2026-10-10": {
+   "139657": {
+    "revenue": 84758,
+    "orders": 149,
+    "avgCheck": 568.85
+   },
+   "139854": {
+    "revenue": 71989,
+    "orders": 153,
+    "avgCheck": 470.52
+   },
+   "139855": {
+    "revenue": 216340,
+    "orders": 419,
+    "avgCheck": 516.32
+   },
+   "139856": {
+    "revenue": 40566,
+    "orders": 73,
+    "avgCheck": 555.7
+   },
+   "139857": {
+    "revenue": 182542,
+    "orders": 343,
+    "avgCheck": 532.19
+   },
+   "139860": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139861": {
+    "revenue": 193551,
+    "orders": 408,
+    "avgCheck": 474.39
+   },
+   "139909": {
+    "revenue": 52599,
+    "orders": 116,
+    "avgCheck": 453.44
    },
    "139910": {
     "revenue": 0,
