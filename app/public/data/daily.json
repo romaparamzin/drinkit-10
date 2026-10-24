@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-10-23T05:17:26.713Z",
+ "updatedAt": "2026-10-24T04:58:53.147Z",
  "units": {
   "139657": {
    "name": "Москва 10-1",
@@ -3241,6 +3241,88 @@
     "revenue": 108165,
     "orders": 236,
     "avgCheck": 458.33
+   },
+   "139910": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139919": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139946": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139947": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139964": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139966": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139970": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139984": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   }
+  },
+  "2026-10-23": {
+   "139657": {
+    "revenue": 217427,
+    "orders": 490,
+    "avgCheck": 443.73
+   },
+   "139854": {
+    "revenue": 88693,
+    "orders": 206,
+    "avgCheck": 430.55
+   },
+   "139855": {
+    "revenue": 238452,
+    "orders": 546,
+    "avgCheck": 436.73
+   },
+   "139856": {
+    "revenue": 174436,
+    "orders": 427,
+    "avgCheck": 408.52
+   },
+   "139857": {
+    "revenue": 161156,
+    "orders": 331,
+    "avgCheck": 486.88
+   },
+   "139860": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139861": {
+    "revenue": 187740,
+    "orders": 414,
+    "avgCheck": 453.48
+   },
+   "139909": {
+    "revenue": 129142,
+    "orders": 273,
+    "avgCheck": 473.05
    },
    "139910": {
     "revenue": 0,
