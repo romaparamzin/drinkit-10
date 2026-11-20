@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-19T07:52:23.324Z",
+ "updatedAt": "2026-11-20T07:42:23.452Z",
  "units": {
   "139657": {
    "name": "Москва 10-1",
@@ -78,6 +78,11 @@
   },
   "139984": {
    "name": "Москва 10-16",
+   "alias": null,
+   "departmentId": 392
+  },
+  "140009": {
+   "name": "Москва 10-17",
    "alias": null,
    "departmentId": 392
   }
@@ -5085,6 +5090,11 @@
     "revenue": 0,
     "orders": 0,
     "avgCheck": 0
+   },
+   "140009": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
    }
   },
   "2026-11-14": {
@@ -5492,6 +5502,93 @@
     "avgCheck": 0
    },
    "139984": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   }
+  },
+  "2026-11-19": {
+   "139657": {
+    "revenue": 227185,
+    "orders": 529,
+    "avgCheck": 429.46
+   },
+   "139854": {
+    "revenue": 83482,
+    "orders": 193,
+    "avgCheck": 432.55
+   },
+   "139855": {
+    "revenue": 226478,
+    "orders": 505,
+    "avgCheck": 448.47
+   },
+   "139856": {
+    "revenue": 170363,
+    "orders": 432,
+    "avgCheck": 394.36
+   },
+   "139857": {
+    "revenue": 123524,
+    "orders": 272,
+    "avgCheck": 454.13
+   },
+   "139860": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139861": {
+    "revenue": 137890,
+    "orders": 316,
+    "avgCheck": 436.36
+   },
+   "139909": {
+    "revenue": 103642,
+    "orders": 245,
+    "avgCheck": 423.03
+   },
+   "139910": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139919": {
+    "revenue": 90005,
+    "orders": 195,
+    "avgCheck": 461.56
+   },
+   "139946": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139947": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139964": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139966": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139970": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "139984": {
+    "revenue": 0,
+    "orders": 0,
+    "avgCheck": 0
+   },
+   "140009": {
     "revenue": 0,
     "orders": 0,
     "avgCheck": 0
